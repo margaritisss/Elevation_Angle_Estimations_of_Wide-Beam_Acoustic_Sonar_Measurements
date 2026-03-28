@@ -20,7 +20,7 @@ import os
 #  Core TGA algorithm
 # ──────────────────────────────────────────────────────────────────────
 
-def _trimmed_weighted_mean(weights, vectors, trim_pct=0.50):
+def _trimmed_weighted_mean(weights, vectors, trim_pct=0.50): 
     """
     Element-wise trimmed weighted mean (Algorithm detail from §3.3).
 
@@ -41,12 +41,12 @@ def _trimmed_weighted_mean(weights, vectors, trim_pct=0.50):
     -------
     m_rob : (D,) robust mean vector (un-normalised)
     """
-    N, D = vectors.shape
+    N, D = vectors.shape # number of points, dimensionality
     # Weighted vectors:  w_n * a_n * u_n
-    wv = weights[:, None] * vectors          # (N, D)
+    wv = weights[:, None] * vectors  # (N, D)
 
-    n_trim = int(np.floor(trim_pct * N))
-    if n_trim == 0:
+    n_trim = int(np.floor(trim_pct * N)) # number of points to trim from each tail
+    if n_trim == 0: 
         # No trimming — ordinary weighted mean
         return wv.mean(axis=0)
 
@@ -62,7 +62,6 @@ def _trimmed_weighted_mean(weights, vectors, trim_pct=0.50):
         kept = col[idx[n_trim: N - n_trim]]
         m_rob[d] = kept.mean()
     return m_rob
-
 
 def tga_component(X, trim_pct=0.50, max_iter=500, tol=1e-8, rng=None):
     """
@@ -129,7 +128,6 @@ def tga_component(X, trim_pct=0.50, max_iter=500, tol=1e-8, rng=None):
     lam = np.sum(np.abs(X_clean @ q))
 
     return q, lam
-
 
 def tga_rpca(X, K=3, trim_pct=0.50, max_iter=500, tol=1e-8, seed=42):
     """
@@ -269,11 +267,18 @@ def rpca_on_scans(scan_ids='all',
                 'n_points':   n_pts,
             }
 
+            # --- UPDATED PRINT BLOCK ---
             if verbose:
-                print(f"  Scan {key}  |  {n_pts:>4d} pts  |  "
-                      f"variances = {rpca['variances']}")
+                print(f"--- Summary for Scan {key} ---")
+                print(f"Number of points used: {n_pts}")
+                print(f"Robust Center (Median):\n{rpca['center']}")
+                print()
+                print(f"Captured Variances:\n{rpca['variances']}")
+                print()
+                print(f"The {K} Principal Vectors (Components Matrix):\n{rpca['components']}\n")
 
+    # Optional: You can remove or keep this final confirmation
     if verbose:
-        print(f"\n✓ Processed {len(results)} scan(s)")
+        print(f"✓ Processed {len(results)} scan(s)")
 
     return results
