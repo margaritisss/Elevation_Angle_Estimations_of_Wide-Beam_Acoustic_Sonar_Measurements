@@ -145,7 +145,7 @@
 #     plotter.add_legend(size=(0.25, 0.15), bcolor=(0.95, 0.95, 0.95))
 #     plotter.add_title(f'Scan {scan_num:04d} — Elliptic Cylinder Before / After LM', font_size=12)
 
-#     plotter.show(jupyter_backend='trame')
+#     plotter.show(jupyter_backend='client')
 
 #     return opt_result
 
@@ -308,6 +308,6 @@ def visualize_cylinder_comparison(scan_num, cylinder_axis, ellipse_results,
     plotter.add_legend(size=(0.25, 0.15), bcolor=(0.95, 0.95, 0.95))
     plotter.add_title(f'Scan {scan_num:04d} — Elliptic Cylinder Before / After LM', font_size=12)
 
-    plotter.show(jupyter_backend='trame')
+    plotter.show(jupyter_backend='client')
 
     return opt_result

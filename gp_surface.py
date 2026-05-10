@@ -213,12 +213,12 @@ def train_gp_for_scan(s_scan, M_v_rho, M_v_psi, M_v_pose_idx,
     n = len(M_v_rho)
     if n < 3:
         if verbose:
-            print(f" ⚠ Skipping: only {n} measurements (need ≥ 3)")
+            print(f"  ⚠ Skipping: only {n} measurements (need ≥ 3)")
         return None
 
     # ── Step 1: Map each measurement to its curvilinear abscissa ──────
-    local_idx      = (M_v_pose_idx - pose_idx_min).astype(int)
-    local_idx      = np.clip(local_idx, 0, len(s_scan) - 1)
+    local_idx = (M_v_pose_idx - pose_idx_min).astype(int)
+    local_idx = np.clip(local_idx, 0, len(s_scan) - 1)
     s_measurements = s_scan[local_idx]
 
     # ── Step 2: Compute prior range for each measurement ─────────────

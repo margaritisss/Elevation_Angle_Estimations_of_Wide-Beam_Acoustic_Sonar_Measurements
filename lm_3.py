@@ -392,7 +392,7 @@ def _cylinder_residuals_inner(eps, point_cloud, T_current, log_a, log_b):
 
 
 def optimize_elliptic_cylinder(initial_state, max_outer=50, tol=1e-8,
-                               verbose=True):
+                               verbose=True): 
     """
     Refine the elliptic cylinder estimate using Levenberg-Marquardt
     with proper iterative on-manifold SE(3) optimization (Blanco §10.2).

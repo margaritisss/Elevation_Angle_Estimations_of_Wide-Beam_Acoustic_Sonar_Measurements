@@ -409,7 +409,7 @@ def visualize_gp_surface(scan_num,
         font_size=11,
     )
 
-    plotter.show(jupyter_backend='trame')
+    plotter.show(jupyter_backend='client')
 
     return gp_result, surface_data
 

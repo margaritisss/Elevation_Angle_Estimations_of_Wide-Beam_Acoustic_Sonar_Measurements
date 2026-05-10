@@ -72,4 +72,55 @@ def visualize_rpca_vectors(scan_num, rpca_results, h5_path='HDF5_DATA/7_SCANS.h5
     print(f"Showing Scan {scan_num} | Red Arrow: 1st PC | Green: 2nd PC | Blue: 3rd PC")
     
     # Force Jupyter to let the 3D server start (using your existing backend)
-    plotter.show(jupyter_backend='trame')
+    plotter.show(jupyter_backend='static')
+
+def visualize_axis_selection(point_cloud, rpca_data, axis_index):
+    """
+      Visualizes the point cloud and the 3 principal components.
+      The selected cylinder axis is highlighted in red.
+    """
+    center     = rpca_data['center']
+    components = rpca_data['components']
+    
+    plotter = pv.Plotter()
+    
+    # 1. Plot the point cloud
+    plotter.add_points(
+        point_cloud, 
+        color='lightblue', 
+        point_size=5.0, 
+        render_points_as_spheres=True, 
+        opacity=0.6,
+        name='Sonar Points'
+    )
+    
+    # 2. Add the center point
+    plotter.add_points(
+        np.array([center]), 
+        color='yellow', 
+        point_size=15.0, 
+        render_points_as_spheres=True
+    )
+    
+    # Scale factor for the arrows (make them big enough to see)
+    bounds = plotter.bounds
+    scale  = max(bounds[1]-bounds[0], bounds[3]-bounds[2], bounds[5]-bounds[4]) * 0.3
+
+    # 3. Plot the 3 PCA vectors
+    for i, vec in enumerate(components):
+        # Choose color and thickness based on whether it's the selected axis
+        if i == axis_index:
+            color = 'red'
+            shaft_radius = 0.05
+            label = f"Cylinder Axis ({i})"
+        else:
+            color = 'blue'
+            shaft_radius = 0.02
+            label = f"Cross-section Axis ({i})"
+            
+        arrow = pv.Arrow(start=center, direction=vec, scale=scale, shaft_radius=shaft_radius)
+        plotter.add_mesh(arrow, color=color, name=label)
+
+    # 4. Render
+    plotter.add_axes()
+    plotter.show(jupyter_backend='static')

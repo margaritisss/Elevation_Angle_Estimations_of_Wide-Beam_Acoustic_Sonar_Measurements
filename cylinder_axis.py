@@ -10,7 +10,7 @@ def find_cylinder_axis(point_cloud, components):
     tangents = np.diff(point_cloud, axis=0)
     projection_sums = np.zeros(3)
     for k in range(3):
-        projection_sums[k] = np.sum(np.abs(tangents @ components[k]))
+        projection_sums[k] = np.sum(np.abs(tangents @ components[k])**2)
 
     axis_index  = np.argmin(projection_sums)
     axis_vector = components[axis_index]
@@ -69,6 +69,7 @@ def find_cylinder_axes_on_scans(scan_ids='all',
                 'variances':       rpca_data['variances'],
                 'projection_sums': proj_sums,
                 'n_points':        rpca_data['n_points'],
+                'point_cloud':      pc,
             }
 
             if verbose:
@@ -82,3 +83,5 @@ def find_cylinder_axes_on_scans(scan_ids='all',
         print(f"\n✓ Identified cylinder axis for {len(results)} scan(s)")
 
     return results
+
+
